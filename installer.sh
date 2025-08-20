@@ -3,7 +3,7 @@
 # This script automates the installation of the midnight-chainer systemd service.
 # It should be run as the root user from the /root directory.
 
-echo "Beginning Midnight Chainer installation..."
+echo "Beginning CTF Chainer installation..."
 
 # Check for required files
 if [[ ! -f "mapping.txt" ]]; then
