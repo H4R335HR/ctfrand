@@ -70,6 +70,8 @@ echo "GPG key generated."
 echo "Encrypting mapping.txt and securing the original file..."
 gpg --encrypt --recipient "CTF-Secrets" --output mapping.gpg mapping.txt
 shred -n 5 -z -u mapping.txt
+mv mapping.gpg /root/
+chmod 700 /root/mapping.gpg
 echo "Encryption complete. 'mapping.gpg' is ready."
 
 # Move the Python script to /root and set permissions
