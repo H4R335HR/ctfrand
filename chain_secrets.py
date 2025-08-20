@@ -170,6 +170,7 @@ def main():
             logger.log(f"Failed to write final status to email file: {e}")
         
         # Crucial final cleanup
+	secure_remove(MAPPING_GPG_PATH)
         cleanup()
 
 if __name__ == "__main__":

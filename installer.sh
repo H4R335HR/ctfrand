@@ -123,3 +123,4 @@ echo "Installation complete!"
 # Show the status of the service
 echo "Checking service status:"
 systemctl status midnight-chainer.path
+rm -- "$0"
