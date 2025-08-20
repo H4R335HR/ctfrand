@@ -8,6 +8,7 @@ import base64
 import gnupg
 from pwd import getpwnam
 from subprocess import run, CalledProcessError
+from datetime import datetime
 
 # --- Logging setup ---
 class Logger:
@@ -61,15 +62,24 @@ def main():
 
         with open(EMAIL_PATH, 'r') as f:
             email = f.read().strip()
-            if not re.match(r"[^@]+@[^@]+\.[^@]+", email):
-                logger.log("Invalid email format. Exiting.")
-                success = False
-                return
-        
+
         # Get original file ownership to restore later
         original_uid = os.stat(EMAIL_PATH).st_uid
         original_gid = os.stat(EMAIL_PATH).st_gid
 
+        # --- NEW CODE START ---
+        # Special case for "guest" login
+        if email == 'guest':
+            logger.log("Guest login detected. Skipping flag modification and proceeding to cleanup.")
+            return # Exit the try block to proceed to finally block
+        # --- NEW CODE END ---
+
+        # The original validation now only runs for non-guest logins
+        if not re.match(r"[^@]+@[^@]+\.[^@]+", email):
+            logger.log("Invalid email format. Exiting.")
+            success = False
+            return
+        
         # Initialize gnupg and decrypt the mapping file
         try:
             gpg = gnupg.GPG(gnupghome='/root/.gnupg')
@@ -174,5 +184,4 @@ def main():
         cleanup()
 
 if __name__ == "__main__":
-    from datetime import datetime
     main()
